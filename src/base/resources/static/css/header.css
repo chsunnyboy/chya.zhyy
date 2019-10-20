@@ -1,0 +1,26 @@
+.r{
+	float: right;
+}
+.l{
+	float: left;
+}
+.font18{
+	font-size: 18px;
+}
+#headCount{
+	width: 100%;
+	padding: 0 18px 0 260px;
+	height: 60px;
+	box-sizing: border-box;
+	line-height: 60px;
+}
+#headCount .exitSpan{
+	display: inline-block;
+	height: 24px;
+	line-height: 24px;
+	border-left: 2px solid #999;
+	padding-left: 16px;
+	margin-top: 18px;
+	margin-left: 10px;
+	cursor: pointer;
+}

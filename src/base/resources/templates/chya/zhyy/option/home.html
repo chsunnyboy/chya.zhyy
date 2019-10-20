@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<title>选项字典</title>
+  <link th:href="@{/frame1/res/tabs.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/frame1/res/frame.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/frame1/res/index.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/res/third-party/scrollbar/jquery.mCustomScrollbar.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/frame1/res/menu/menu.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/scripts/miniui/themes/cupertino/skin.css}"/>
+    <script th:src="@{/frame1/res/menu/menu.js}" type="text/javascript"></script>
+    <script th:src="@{/frame1/res/menutip.js}" type="text/javascript"></script>
+    <script th:src="@{/scripts/boot.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/scripts/jquery.min.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/res/third-party/scrollbar/jquery.mCustomScrollbar.concat.min.js}" type="text/javascript"></script>
+	<style type="text/css">
+		.New_Button, .Edit_Button, .Delete_Button, .Update_Button,
+		.Cancel_Button {
+			font-size: 11px;
+			color: #1B3F91;
+			font-family: Verdana;
+			margin-right: 5px;
+		}
+		.title_show{text-overflow:ellipsis; overflow:hidden; white-space:nowrap; width:200px;}
+	</style>
+</head>
+<body style="width: 100%;overflow-y: hidden;overflow-x: auto;">
+    <div id="searchForm" style="padding-bottom: 10px;">
+        <table style="width: 100%; margin-top: 10px;table-layout:fixed">
+            <tr style="align: center;">
+                <td style="text-align: right;">关键字：</td>
+                <td>
+                	<input id="keyword" name="keyword" emptyText="选项字典名称/代码" class="mini-textbox" style="width:100%;margin-right: 30px;"/>
+                </td>
+                <td style="text-align: right;">选项名称：</td>
+                <td>
+                	<input id="optionNameQ" name="optionName" class="mini-textbox" style="width:100%;margin-right: 30px;"/>
+                </td>
+                <td style="text-align: right;">选项编码：</td>
+                <td>
+                	<input id="optionCodeQ" name="optionCode" class="mini-textbox" style="width:100%;margin-right: 30px;"/>
+                </td>
+                <td>
+                    <span colspan="2" class="mini-button" plain="true" iconCls="icon-search" style="margin-right: 14px;" onclick="search()">查询</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+        <table style="width:100%;">
+            <tr>
+                <td style="width:100%;">
+                    <!-- <a class="mini-button" plain="true" iconCls="icon-add" onclick="doAddDoc()">新增</a> -->
+                    <span class="separator"></span>
+                    <a class="mini-button" plain="true" iconCls="icon-edit" onclick="doEditDoc()">编辑</a>
+                    <span class="separator"></span>
+                    <!-- <a class="mini-button" plain="true" iconCls="icon-remove" onclick="doRemoveDoc()">删除</a> -->
+                    <!-- <span class="separator"></span> -->
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="docgrid" class="mini-datagrid" th:attr="url=@{{funcPath}/search(funcPath=${funcPath})}" idField="id" allowResize="true"
+     	pageSize="20" showPager="true" multiSelect="true"  selectOnLoad="true" style="height:40%;">
+	    <div property="columns">
+	        <div type="indexcolumn" headerAlign="center"></div>
+	        <div type="checkcolumn" ></div>
+	        <div field="optionName" allowSort="true" headerAlign="left" align="left" >选项名称</div>
+	        <div field="optionCode" allowSort="true" headerAlign="left" align="left" >选项编码</div>
+	        <div field="userFlag" allowSort="true" headerAlign="center" align="center"renderer="userFlagRenderer">用户选项</div>
+	        <div field="memo" allowSort="true" headerAlign="center"  align="center">备注</div>
+	    </div>
+ 	</div> 
+ 	<div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+        <table style="width:100%;">
+            <tr>
+                <td style="width:100%;">
+                    <a class="mini-button" plain="true" iconCls="icon-add" onclick="doAddDtl()">新增</a>
+                    <span class="separator"></span>
+                    <a class="mini-button" plain="true" iconCls="icon-edit" onclick="doEditDtl()">编辑</a>
+                    <span class="separator"></span>
+                    <a class="mini-button" plain="true" iconCls="icon-remove" onclick="doRemoveDtl()">删除</a>
+                    <span class="separator"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+ 	<div id="dtlgrid" class="mini-datagrid" idField="id" allowResize="true"
+     	pageSize="20" showPager="true" multiSelect="true"  selectOnLoad="true" showPagerButtonIcon ="true" style="height:40%;">
+	    <div property="columns">
+	        <div type="indexcolumn" headerAlign="center"></div>
+	        <div type="checkcolumn" ></div>
+	        <div field="itemName" allowSort="true" headerAlign="left" align="left" width="150px">选项显示值</div>
+	        <div field="itemId" allowSort="true" headerAlign="left" align="left" >选项值</div>
+	        <div field="memo" allowSort="true" headerAlign="center"  align="center">备注</div>
+	    </div>
+ 	</div>
+    
+    <div id="editDocWindow" class="mini-window" title="新增/编辑  组织机构信息" style="width: 800px;" showModal="true" allowResize="true" allowDrag="true">
+        <div id="editDocForm" class="form">
+            <input class="mini-hidden" name="id" />
+            <table style="width: 100%;">
+                <tr>
+                    <td>选项名称：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="optionName" name="optionName" class="mini-textbox" style="width: 200px;" required="true"/>
+                    </td>
+                    <td>选项编码：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="optionCode" name="optionCode" class="mini-textbox" style="width: 200px;" required="true" onblur="valuechanged(this)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>用户选项：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="userFlag" name="userFlag" class="mini-combobox" style="width: 200px;" data="[{'key':false,'value':'否'},{'key':true,'value':'是'}]" textField="value" valueField="key" required="true" />
+                    </td>
+                    <td>备注：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="memo" name="memo" class="mini-textbox" style="width: 200px;" required="false" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; padding-top: 20px;padding-bottom:10px;" colspan="4">
+                        <a class="mini-button" onclick="saveDoc()" style="width: 60px; margin-right: 20px;">保存</a>
+                        <a class="mini-button" onclick="cancel('doc')" style="width: 60px;">取消</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="editDtlWindow" class="mini-window" title="新增/编辑  组织机构信息" style="width: 800px;" showModal="true" allowResize="true" allowDrag="true">
+        <div id="editDtlForm" class="form">
+            <input class="mini-hidden" name="id" />
+            <table style="width: 100%;">
+                <tr>
+                    <td>选项显示值：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="itemName" name="itemName" class="mini-textbox" style="width: 200px;" required="true"/>
+                    </td>
+                    <td>选项值：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="itemId" name="itemId" class="mini-textbox" style="width: 200px;" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>备注：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="memo" name="memo" class="mini-textbox" style="width: 200px;" required="false" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; padding-top: 20px;padding-bottom:10px;" colspan="4">
+                        <a class="mini-button" onclick="saveDtl()" style="width: 60px; margin-right: 20px;">保存</a>
+                        <a class="mini-button" onclick="cancel('dtl')" style="width: 60px;">取消</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        //<![CDATA[
+        mini.parse();
+        var funcPath=/*[[${funcPath}]]*/;
+        $('#docgrid').css({'height':$('html').height()-330+'px'})
+        $('#dtlgrid').css({'height':$('html').height()-$('#docgrid').height()-130+'px'})
+        var docgrid = mini.get("docgrid");
+        var dtlgrid = mini.get("dtlgrid");
+        
+        var editDocWindow = mini.get("editDocWindow");
+        var editDtlWindow = mini.get("editDtlWindow");
+
+        var userFlagOption=[{'key':true,'value':'是'},{'key':false,'value':'否'}];
+        function userFlagRenderer(e){
+        	for(var i=0;i<userFlagOption.length;i++){
+        		var g=userFlagOption[i]
+        		if(g.key==e.value) return g.value;
+        	}
+        	return "";
+        }
+        $(function(){
+            search();
+        })
+        
+        //查询
+        function search(){
+         	var form = new mini.Form("#searchForm");
+         	var formData = form.getData();      //获取表单多个控件的数据
+         	docgrid.load(formData,function(data){
+                if(data.data.length==0)dtlgrid.setData(null);
+            });
+        }
+        
+        docgrid.on("select", function (e) {
+        	var docId=e.record.id;
+        	var url=/*[[@{{funcPath}/searchOptionItems(funcPath=${funcPath})}]]*/;
+        	dtlgrid.setUrl(url);
+            dtlgrid.load({optionId:docId},function(data){
+            });
+        });
+        // 点增加按钮
+        function doAddDoc(){
+        	editDocWindow.show();
+            var eidtDocform = new mini.Form("#editDocForm");
+            eidtDocform.clear();
+            // 状态默认为0
+        }
+        function doAddDtl(){
+        	var rows=docgrid.getSelecteds();
+           	if(rows.length!=1){
+           		mini.alert("请选择一项选项！");
+           		return;
+           	}
+        	editDtlWindow.show();
+            var eidtDtlform = new mini.Form("#editDtlForm");
+            eidtDtlform.clear();
+            // 状态默认为0
+        }
+
+        // 编辑
+        function doEditDoc(){
+            var rows = docgrid.getSelecteds();
+            if (rows.length == 1) {
+                var row = rows[0];
+                if (row) {
+                    var id = row.id;
+                    var userFlag=row.userFlag;
+                    if(!userFlag){
+                    	mini.alert("缺省选项不可编辑！");
+                    	return;
+                    }
+                    if (id) {
+                        var editDocForm = new mini.Form("#editDocForm");
+                        var url = /*[[@{{funcPath}/findDocById(funcPath=${funcPath})}]]*/;
+                        $.ajax({
+                            url:url,
+                            data:{id:id},
+                            success:function(data){
+                                if(data.success){
+                                    var o = mini.decode(data.data);
+                                    editDocForm.setData(o);
+                                    editDocWindow.show();
+                                }
+                            },
+                            error: function () {
+                                mini.alert("表单加载错误");
+                                editDocForm.unmask();
+                            }
+                        })
+                    }
+                }
+            } else {
+                mini.alert("请选中一条数据！")
+            }
+        }
+        
+        function doEditDtl(){
+        	var docrows = docgrid.getSelecteds();
+        	if(docrows.length==1){
+        		var userFlag=docrows[0].userFlag;
+        		if(!userFlag){
+        			mini.alert("缺省选项不可编辑！");
+        			return;
+        		}
+        	}
+            var rows = dtlgrid.getSelecteds();
+            if (rows.length == 1) {
+                var row = rows[0];
+                if (row) {
+                    var id = row.id;
+                    if (id) {
+                        var editDtlForm = new mini.Form("#editDtlForm");
+                        var url = /*[[@{{funcPath}/findDtlById(funcPath=${funcPath})}]]*/;
+                        $.ajax({
+                            url:url,
+                            data:{id:id},
+                            success:function(data){
+                                if(data.success){
+                                    var o = mini.decode(data.data);
+                                    editDtlForm.setData(o);
+                                    editDtlWindow.show();
+                                }
+                            },
+                            error: function () {
+                                mini.alert("表单加载错误");
+                                editDtlForm.unmask();
+                            }
+                        })
+                    }
+                }
+            } else {
+                mini.alert("请选中一条数据！")
+            }
+        }
+
+        // 执行删除操作
+        function doRemoveDoc(){
+            var rows = docgrid.getSelecteds();
+            if (rows.length > 0) {
+                var ids = [];
+                for (var i = 0, l = rows.length; i < l; i++) {
+                    var r = rows[i];
+                    var userFlag=r.userFlag;
+                    if(!userFlag){
+                    	mini.alert("缺省选项不可删除！");
+                    	return;
+                    }
+                    ids.push(r.id);
+                }
+                mini.confirm("确定删除？", "确定？",function (action) {
+                    if (action == "ok") {
+                        var id = ids.join(',');
+                        var url = /*[[@{{funcPath}/removeDoc(funcPath=${funcPath})}]]*/;
+                        $.ajax({
+                            url: url,
+                            data:{ids:id},
+                            success: function (data) {
+                                if(data.success){
+                                    mini.alert('删除成功！');
+                                    search();
+                                } else {
+                                	mini.alert(data.error);
+                                }
+                            }
+                        });
+                    } else {
+                        return;
+                    }
+                });
+            } else {
+                mini.alert("请选中一条数据！")
+            }
+        }
+        
+        function doRemoveDtl(){
+        	var docrows = docgrid.getSelecteds();
+        	if(docrows.length==1){
+        		var userFlag=docrows[0].userFlag;
+        		if(!userFlag){
+        			mini.alert("缺省选项不可删除！");
+        			return;
+        		}
+        	}
+            var rows = dtlgrid.getSelecteds();
+            if (rows.length > 0) {
+                var ids = [];
+                for (var i = 0, l = rows.length; i < l; i++) {
+                    var r = rows[i];
+                    ids.push(r.id);
+                }
+                mini.confirm("确定删除？", "确定？",function (action) {
+                    if (action == "ok") {
+                        var id = ids.join(',');
+                        var url = /*[[@{{funcPath}/removeDtl(funcPath=${funcPath})}]]*/;
+                        $.ajax({
+                            url: url,
+                            data:{ids:id},
+                            success: function (data) {
+                                if(data.success){
+                                    mini.alert('删除成功！');
+                                    dtlgrid.reload();
+                                } else {
+                                	mini.alert(data.error);
+                                }
+                            }
+                        });
+                    } else {
+                        return;
+                    }
+                });
+            } else {
+                mini.alert("请选中一条数据！")
+            }
+        }
+
+        // 取消新增/编辑弹出框
+        function cancel(type) {
+        	if(type=='doc'){
+        		editDocWindow.hide();
+        	}
+        	if(type=='dtl'){
+        		editDtlWindow.hide();
+        	}
+            
+        }
+
+        // 保存
+        function saveDoc() {
+            var form = new mini.Form("#editDocForm");
+            form.validate();
+            if (form.isValid() == false) {
+            	return;
+            }
+            
+            var messageId = mini.loading("保存中，请稍后......");
+            var json = mini.encode(form.getData());
+            var url = /*[[@{{funcPath}/saveDoc(funcPath=${funcPath})}]]*/;
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType:'application/json',
+                data: json,
+                success: function (res) {
+                    mini.hideMessageBox(messageId);
+                    if(res.success){
+                        editDocWindow.hide();
+                        docgrid.reload();
+                        mini.alert('保存成功！');
+                    } else {
+                        mini.alert(res.error);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    mini.hideMessageBox(messageId);
+                    mini.alert(jqXHR.responseText);
+                }
+            });
+        }
+
+        function saveDtl() {
+            var form = new mini.Form("#editDtlForm");
+            form.validate();
+            if (form.isValid() == false) {
+            	return;
+            }
+            var docId = docgrid.getSelected().id;
+            var messageId = mini.loading("保存中，请稍后......");
+            var formData=form.getData();
+            formData.optionId=docId;
+            var json = mini.encode(formData);
+            var url = /*[[@{{funcPath}/saveDtl(funcPath=${funcPath})}]]*/;
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType:'application/json',
+                data: json,
+                success: function (res) {
+                    mini.hideMessageBox(messageId);
+                    if(res.success){
+                        editDtlWindow.hide();
+                        dtlgrid.reload();
+                        mini.alert('保存成功！');
+                    } else {
+                        mini.alert(res.error);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    mini.hideMessageBox(messageId);
+                    mini.alert(jqXHR.responseText);
+                }
+            });
+        }
+        function valuechanged(e){
+        	var value=mini.get("optionCode").getValue();
+        	mini.get("optionCode").setValue(value.toUpperCase());
+        }
+        //]]>
+    </script>
+</body>
+</html>
