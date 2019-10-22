@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<title>组织机构</title>
+  <link th:href="@{/frame1/res/tabs.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/frame1/res/frame.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/frame1/res/index.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/res/third-party/scrollbar/jquery.mCustomScrollbar.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/frame1/res/menu/menu.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/scripts/miniui/themes/cupertino/skin.css}"/>
+    <script th:src="@{/frame1/res/menu/menu.js}" type="text/javascript"></script>
+    <script th:src="@{/frame1/res/menutip.js}" type="text/javascript"></script>
+    <script th:src="@{/scripts/boot.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/scripts/jquery.min.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/res/third-party/scrollbar/jquery.mCustomScrollbar.concat.min.js}" type="text/javascript"></script>
+	<style type="text/css">
+		.New_Button, .Edit_Button, .Delete_Button, .Update_Button,
+		.Cancel_Button {
+			font-size: 11px;
+			color: #1B3F91;
+			font-family: Verdana;
+			margin-right: 5px;
+		}
+		.title_show{text-overflow:ellipsis; overflow:hidden; white-space:nowrap; width:200px;}
+	</style>
+</head>
+<body style="width: 100%; height: 100%;overflow-y: hidden;overflow-x: auto;padding-right:10px">
+    <div id="searchForm" style="padding-bottom: 10px;">
+        <table style="width: 100%; margin-top: 10px;table-layout:fixed">
+        	<!-- <tr style="align: center;">
+        		<td style="width:100px;text-align: center;padding-left: 8px;"></td><td style="width:20%;"></td>
+        		<td style="width:100px;text-align: center;padding-left: 8px;"></td><td style="width:20%;"></td>
+        		<td style="width:100px;text-align: center;padding-left: 8px;"></td><td style="width:20%;"></td>
+        		<td style="width:100px;text-align: center;padding-left: 8px;"></td><td style="width:20%;"></td>
+        		<td style="width:100px;text-align: center;padding-left: 8px;"></td><td style="width:20%;"></td>
+
+        	</tr> -->
+            <tr style="align: center;">
+                <td style="text-align: right;">关键字：</td>
+                <td>
+                	<input id="keyword" name="keyword" emptyText="用户名称/编码" class="mini-textbox" style="width:100%;margin-right: 30px;"/>
+                </td>
+                <td style="text-align: right;">用户名称：</td>
+                <td>
+                	<input id="userNameQ" name="userName" class="mini-textbox" style="width:100%;margin-right: 30px;"/>
+                </td>
+                <td style="text-align: right;">用户编码：</td>
+                <td>
+                	<input id="userCodeQ" name="userCode" class="mini-textbox" style="width:100%;margin-right: 30px;"/>
+                </td>
+                <td>
+                    <span class="mini-button" plain="true" iconCls="icon-search" style="margin-right: 14px;" onclick="search()">查询</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div id="mini-splitter" class="mini-splitter" style="width:100%;height:100%;">
+	    <div size="240" showCollapseButton=false>
+	        <div class="mini-fit">
+	            <ul id="tree" class="mini-tree" th:attr="url=@{{funcPath}/loadOrganise(funcPath=${funcPath})}" style="width:100%;"
+	                showTreeIcon="true" textField="organise_name" idField="id" parentField="parent_org_id" resultAsTree="false" showTreeLines="false"
+	                showCheckBox="false" showFolderCheckBox="false" 
+	            >        
+	            </ul>
+	        </div>
+	    </div>
+	    <div showCollapseButton="false">
+	        <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+	            <table style="width:100%;">
+	                <tr>
+	                    <td style="width:100%;">
+	                        <a class="mini-button" plain="true" iconCls="icon-add" onclick="doAdd()">新增</a>
+	                        <span class="separator"></span>
+	                        <a class="mini-button" plain="true" iconCls="icon-edit" onclick="doEdit()">编辑</a>
+	                        <span class="separator"></span>
+	                        <a class="mini-button" plain="true" iconCls="icon-remove" onclick="doRemove()">删除</a>
+	                        <span class="separator"></span>
+	                    </td>
+	                </tr>
+	            </table>
+	        </div>
+	        <div id="retails" class="mini-fit" >
+	            <div id="datagrid" class="mini-datagrid" th:attr="url=@{{funcPath}/search(funcPath=${funcPath})}" idField="id" allowResize="true"
+			         pageSize="20" showPager="true" multiSelect="true"  selectOnLoad="true" showPagerButtonIcon ="true">
+			        <div property="columns">
+			            <div type="indexcolumn" headerAlign="center" width="30px"></div>
+			            <div type="checkcolumn" width="30px"></div>
+			            <div field="userName" allowSort="true" headerAlign="left" align="left">用户名称</div>
+			            <div field="userCode" allowSort="true" headerAlign="left" align="left" >用户编码</div>
+			            <div field="userOpcode" allowSort="true" headerAlign="left" align="left" >助记码</div>
+			            <div field="phoneNo" allowSort="true" headerAlign="left" align="left" >手机号</div>
+			            <div field="admin" allowSort="true" headerAlign="left" align="left" >管理员</div>
+			            <div field="orderNo" allowSort="true" headerAlign="center"  align="center">序号</div>
+			            <div field="status" allowSort="true" headerAlign="center" align="center" renderer="organiseTypeRender">状态</div>
+			       		<div field="validDate" allowSort="true" headerAlign="center" align="center">有效期至</div>
+			            <div field="memo" allowSort="true" headerAlign="center"  align="center">备注</div>
+			        </div>
+			    </div> 
+	        </div>
+	    </div>        
+	</div>
+    
+    <div id="editWindow" class="mini-window" title="新增/编辑  组织机构信息" style="width: 800px;" showModal="true" allowResize="true" allowDrag="true">
+        <div id="editForm" class="form">
+            <input class="mini-hidden" name="id" />
+            <table style="width: 100%;">
+                <tr>
+                    <td>组织机构名称：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="organiseName" name="organiseName" class="mini-textbox" style="width: 200px;" required="true"/>
+                    </td>
+                    <td>组织机构编码：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="organiseCode" name="organiseCode" class="mini-textbox" style="width: 200px;" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>组织机构类型：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="organiseType" name="organiseType" class="mini-combobox" style="width: 200px;" th:data="${organiseTypeP}" textField="value" valueField="key" required="true" />
+                    </td>
+                    <td>备注：</td>
+                    <td style="padding-top: 8px;">
+                        <input id="memo" name="memo" class="mini-textbox" style="width: 200px;" required="false" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; padding-top: 20px;padding-bottom:10px;" colspan="4">
+                        <a class="mini-button" onclick="save" style="width: 60px; margin-right: 20px;">保存</a>
+                        <a class="mini-button" onclick="cancel" style="width: 60px;">取消</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <script th:inline="javascript">
+        //<![CDATA[
+        mini.parse();
+        var funcPath=/*[[${funcPath}]]*/;
+        $('#mini-splitter').css({'height':$('html').height()-70+'px'})
+        $('#datagrid').css({'height':$('html').height()-110+'px'})
+        var grid = mini.get("datagrid");
+        var tree = mini.get("tree");
+        var editWindow = mini.get("editWindow");
+
+        $(function(){
+            search();
+        })
+        
+        //查询
+        function search(){
+         	var form = new mini.Form("#searchForm");
+         	var formData = form.getData();      //获取表单多个控件的数据
+         	
+         	var node=tree.getSelectedNode();
+            if(node){
+            	if(node.id!=0)formData.parentOrgId=node.id;
+            }
+            grid.load(formData,function(data){
+                
+            });
+        }
+        
+        tree.on("nodeselect", function (e) {
+          	var form = new mini.Form("#searchForm");
+          	var formData = form.getData();
+          	formData.parentOrgId=e.node.id;
+              	grid.load(formData,function(data){
+            });
+        });
+        
+        var organiseType=/*[[${organiseType}]]*/;
+        function organiseTypeRender(e){
+        	for(var i=0;i<organiseType.length;i++){
+        		var g=organiseType[i];
+        		if(g.key==e.value)return g.value;
+        	}
+        }
+        // 点增加按钮
+        function doAdd(){
+        	var node=tree.getSelectedNode();
+            if(!node){
+            	mini.alert("请选择左侧节点！");
+            	return;
+            }
+            editWindow.show();
+            var eidtform = new mini.Form("#editForm");
+            eidtform.clear();
+            mini.get("organiseType").enable(true);
+        }
+
+        // 编辑
+        function doEdit(){
+            var rows = grid.getSelecteds();
+            if (rows.length == 1) {
+                var row = rows[0];
+                if (row) {
+                    var id = row.id;
+                    if (id) {
+                        var editForm = new mini.Form("#editForm");
+                        var url = /*[[@{{funcPath}/findOneById(funcPath=${funcPath})}]]*/;
+                        $.ajax({
+                            url:url,
+                            data:{id:id},
+                            success:function(data){
+                                if(data.success){
+                                    var o = mini.decode(data.data);
+                                    editForm.setData(o);
+                                    editWindow.show();
+                                    mini.get("organiseType").disable(true);
+                                }
+                            },
+                            error: function () {
+                                mini.alert("表单加载错误");
+                                editForm.unmask();
+                            }
+                        })
+                    }
+                }
+            } else {
+                mini.alert("请选中一条数据！")
+            }
+        }
+
+        // 执行删除操作
+        function doRemove(){
+            var rows = grid.getSelecteds();
+            if (rows.length > 0) {
+                var ids = [];
+                for (var i = 0, l = rows.length; i < l; i++) {
+                    var r = rows[i];
+                    ids.push(r.id);
+                }
+                mini.confirm("确定删除？", "确定？",function (action) {
+                    if (action == "ok") {
+                        var id = ids.join(',');
+                        var url = /*[[@{{funcPath}/remove(funcPath=${funcPath})}]]*/;
+                        $.ajax({
+                            url: url,
+                            data:{ids:id},
+                            success: function (data) {
+                                if(data.success){
+                                    mini.alert('删除成功！');
+                                    search();
+                                    tree.reload();
+                                } else {
+                                	mini.alert(data.error);
+                                }
+                            }
+                        });
+                    } else {
+                        return;
+                    }
+                });
+            } else {
+                mini.alert("请选中一条数据！")
+            }
+        }
+
+        // 取消新增/编辑弹出框
+        function cancel() {
+            editWindow.hide();
+        }
+
+        // 保存
+        function save() {
+            var form = new mini.Form("#editForm");
+            form.validate();
+            if (form.isValid() == false) {
+            	return;
+            }
+            
+            var messageId = mini.loading("保存中，请稍后......");
+            var formData=form.getData();
+            var node=tree.getSelectedNode();
+            if(node)formData.parentOrgId=node.id;
+            
+            var json = mini.encode(formData);
+            var url = /*[[@{{funcPath}/save(funcPath=${funcPath})}]]*/;
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType:'application/json',
+                data: json,
+                success: function (res) {
+                    mini.hideMessageBox(messageId);
+                    if(res.success){
+                        editWindow.hide();
+                        search();
+                        tree.reload();
+                        mini.alert('保存成功！');
+                    } else {
+                        mini.alert(res.error);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    mini.hideMessageBox(messageId);
+                    mini.alert(jqXHR.responseText);
+                }
+            });
+        }
+       
+        //]]>
+    </script>
+</body>
+</html>

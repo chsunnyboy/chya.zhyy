@@ -1,5 +1,7 @@
 package chya.zhyy.entity.sys;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,8 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import chya.zhyy.entity.BaseEntity;
@@ -40,7 +44,7 @@ public class SysUser extends BaseEntity{
     @JoinColumn(name = "org_id", nullable = true)
     private SysOrganise organise;
     
-    @Title("人员编码")
+    @Title("用户编码")
     @Column(name = "user_code",length = 100, nullable = false,unique=true)
     private String userCode;
 
@@ -48,7 +52,7 @@ public class SysUser extends BaseEntity{
     @Column(name = "user_opcode",length = 100, nullable = false)
     private String userOpcode;
     
-    @Title("人员名称")
+    @Title("用户名称")
     @Column(name = "user_name",length = 100, nullable = false)
     private String userName;
 
@@ -68,6 +72,10 @@ public class SysUser extends BaseEntity{
     @Column(name = "status")
     private Integer status;
     
+    @Title("有效期至")
+    @Temporal(TemporalType.DATE)
+    @Column(name = "valid_date")
+    private Date validDate;
 
     public Integer getId() {
         return id;
@@ -139,6 +147,14 @@ public class SysUser extends BaseEntity{
 
 	public void setUserOpcode(String userOpcode) {
 		this.userOpcode = userOpcode;
+	}
+
+	public Date getValidDate() {
+		return validDate;
+	}
+
+	public void setValidDate(Date validDate) {
+		this.validDate = validDate;
 	}
     
 }
