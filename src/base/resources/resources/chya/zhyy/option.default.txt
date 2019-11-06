@@ -1,6 +1,6 @@
 选项编码/选项名称/用户选项/选项值/选项显示值
-SYS_USER_STATUS,用户状态,false,0,启用
-SYS_USER_STATUS,用户状态,false,1,停用
+SYS_USE_STATUS,状态,false,0,停用
+SYS_USE_STATUS,状态,false,1,启用
 SYS_ORGANISE_TYPE,组织机构类型,false,0,公司
 SYS_ORGANISE_TYPE,组织机构类型,false,1,部门
 SYS_ORGANISE_TYPE,组织机构类型,false,2,班组

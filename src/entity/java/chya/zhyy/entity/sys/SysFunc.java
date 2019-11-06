@@ -46,13 +46,13 @@ public class SysFunc extends BaseEntity{
     @Column(name = "order_no")
 	private Integer orderNo;
 	
-	@Title("助记码")
-    @Column(name = "func_opcode",length = 100, nullable = false)
-	private String funcOpcode;
-	
 	@Title("状态")
     @Column(name = "status")
 	private Integer status;
+	
+	@Title("FontAwesome")
+    @Column(name = "iconCls")
+	private String iconCls;
 	
 	public Integer getId() {
 		return id;
@@ -94,20 +94,20 @@ public class SysFunc extends BaseEntity{
 		this.orderNo = orderNo;
 	}
 
-	public String getFuncOpcode() {
-		return funcOpcode;
-	}
-
-	public void setFuncOpcode(String funcOpcode) {
-		this.funcOpcode = funcOpcode;
-	}
-
 	public Integer getStatus() {
 		return status;
 	}
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getIconCls() {
+		return iconCls;
+	}
+
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
 	}
 	
 }

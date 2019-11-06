@@ -24,7 +24,7 @@ public class SysOptionServiceImpl extends BaseService<SysOptionQuery> implements
 	public PageResult<SysOptionModel> search(SysOptionQuery query) throws Exception {
 		PageResult<SysOptionModel> result=new PageResult<SysOptionModel>();
 		StringBuffer sql=new StringBuffer();
-		sql.append(getSelect(query)).append(getFrom(query)).append(getWhere(query));
+		sql.append(getSelect(query)).append(getFrom(query)).append(getWhere(query)).append(query.addSortAndLimitSql());;
 		List<SysOptionModel> list = select.query(SysOptionModel.class, sql.toString());
 		result.setData(list);
 		StringBuffer countsql=new StringBuffer();
@@ -204,7 +204,9 @@ public class SysOptionServiceImpl extends BaseService<SysOptionQuery> implements
             	List<Map<String, Object>> collect2=collect.stream().filter(v->{
             		return itemId.equals(v.get("item_id"));
             	}).collect(java.util.stream.Collectors.toList());
+            	update.doUpdate("update sys_option set option_name=?,user_flag=? where id=?",new Object[] {optionName,userFlag,optionId});
             	if(collect2!=null&&collect2.size()>0) {
+            		update.doUpdate("update sys_option_item set item_name=? where item_id=? and option_id=?",new Object[] {itemName,itemId,optionId});
             		continue;
             	}else {
             		Map<String,Object> itemarg=new HashMap<String,Object>();

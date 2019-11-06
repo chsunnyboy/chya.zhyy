@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 import chya.zhyy.entity.BaseEntity;
 import chya.zhyy.entity.annotation.Title;
-import chya.zhyy.entity.annotation.Option;
+import chya.zhyy.entity.annotation.OptionKey;
 
 @Title("组织机构")
 @Entity
@@ -40,7 +40,7 @@ public class SysOrganise extends BaseEntity{
     private String organiseCode;
 	
     @Title("组织机构类型")
-    @Option(name = "HPS_O2O_TYPE", editable = false)
+    @OptionKey(name = "SYS_ORGANISE_TYPE", editable = false)
     @Column(name = "organise_type", precision = 1)
 	private Integer organiseType;
 
@@ -53,6 +53,10 @@ public class SysOrganise extends BaseEntity{
     @Column(name = "order_no")
     private Integer orderNo;
 
+    @Title("状态")
+    @Column(name = "status",nullable = true)
+    private Integer status;
+    
 	public Integer getId() {
 		return id;
 	}
@@ -100,4 +104,13 @@ public class SysOrganise extends BaseEntity{
 	public void setOrderNo(Integer orderNo) {
 		this.orderNo = orderNo;
 	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	
 }

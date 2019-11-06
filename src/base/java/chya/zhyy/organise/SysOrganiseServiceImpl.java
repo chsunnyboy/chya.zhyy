@@ -20,7 +20,7 @@ public class SysOrganiseServiceImpl extends BaseService<SysOrganiseQuery> implem
 	public PageResult<SysOrganiseModel> search(SysOrganiseQuery query) throws Exception {
 		PageResult<SysOrganiseModel> result=new PageResult<SysOrganiseModel>();
 		StringBuffer sql=new StringBuffer();
-		sql.append(getSelect(query)).append(getFrom(query)).append(getWhere(query));
+		sql.append(getSelect(query)).append(getFrom(query)).append(getWhere(query)).append(query.addSortAndLimitSql());;
 		List<SysOrganiseModel> list = select.query(SysOrganiseModel.class, sql.toString());
 		result.setData(list);
 		StringBuffer countsql=new StringBuffer();
@@ -95,6 +95,7 @@ public class SysOrganiseServiceImpl extends BaseService<SysOrganiseQuery> implem
 			arg.put("organise_name", data.getOrganiseName());
 			arg.put("organise_code", data.getOrganiseCode());
 			arg.put("organise_type", data.getOrganiseType());
+			arg.put("status", data.getStatus());
 			if(data.getParentOrgId()!=0) {
 				arg.put("parent_org_id", data.getParentOrgId());
 			}else {
@@ -104,8 +105,8 @@ public class SysOrganiseServiceImpl extends BaseService<SysOrganiseQuery> implem
 			insert.doInsert("sys_organise", arg);
 		}else {
 			//保存数据
-			Object[] arg=new Object[] {data.getOrganiseName(),data.getOrganiseCode(),data.getMemo(),data.getId()};
-			String updatesql="update sys_organise set organise_name=?,organise_code=?,memo=? where id=?";
+			Object[] arg=new Object[] {data.getOrganiseName(),data.getOrganiseCode(),data.getMemo(),data.getStatus(),data.getId()};
+			String updatesql="update sys_organise set organise_name=?,organise_code=?,memo=?,status=? where id=?";
 			update.doUpdate(updatesql, arg);
 		}
 		

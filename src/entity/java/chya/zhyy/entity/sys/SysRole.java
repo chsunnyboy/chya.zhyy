@@ -38,10 +38,6 @@ public class SysRole extends BaseEntity{
     @Column(name = "order_no")
 	private Integer orderNo;
 	
-	@Title("助记码")
-    @Column(name = "role_opcode",length = 100, nullable = false)
-	private String roleOpcode;
-	
 	@Title("状态")
     @Column(name = "status")
 	private Integer status;
@@ -77,12 +73,5 @@ public class SysRole extends BaseEntity{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public String getRoleOpcode() {
-		return roleOpcode;
-	}
-	public void setRoleOpcode(String roleOpcode) {
-		this.roleOpcode = roleOpcode;
-	}
-	
 	
 }

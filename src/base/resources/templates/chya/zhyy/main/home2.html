@@ -72,14 +72,14 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
         <li ><a href="#"><i class="fa fa-paper-plane"></i> 代办事项</a></li>
-        <li><a href="#"><i class="fa fa-pencil-square-o"></i> 修改密码</a></li>
+        <li id="xiugaimima"><a href="#"><i class="fa fa-pencil-square-o"></i> 修改密码</a></li>
         <li class="dropdown">
             <a class="dropdown-toggle userinfo">
                 <img class="user-img" src="frame1/res/images/user.jpg" />个人资料<i class="fa fa-angle-down"></i>
             </a>
             <ul class="dropdown-menu pull-right">
                 <li ><a href="#"><i class="fa fa-eye "></i> 用户信息</a></li>
-                <li><a href="#"><i class="fa fa-user"></i> 退出登录</a></li>
+                <li><a href="logout"><i class="fa fa-user"></i> 退出登录</a></li>
             </ul>
         </li>
     </ul>
@@ -118,7 +118,6 @@
     }
 
     $(function () {
-
         //menu
         var menu = new Menu("#mainMenu", {
             itemclick: function (item) {
@@ -127,59 +126,54 @@
                 }
             }
         });
-
         $(".sidebar").mCustomScrollbar({ autoHideScrollbar: true });
-
         new MenuTip(menu);
-
         $.ajax({
-            url: "frame1/data/menu.txt",
+            url: "/getMainMemu",
             success: function (text) {
-                var data = mini.decode(text);
+            	debugger;
+                var data = mini.decode(text.data);
                 menu.loadData(data);
             }
         })
-
         //toggle
         $("#toggle, .sidebar-toggle").click(function () {
             $('body').toggleClass('compact');
             mini.layout();
         });
-
         //dropdown
         $(".dropdown-toggle").click(function (event) {
             $(this).parent().addClass("open");
             return false;
         });
-
         $(document).click(function (event) {
             $(".dropdown").removeClass("open");
         });
     });
 
-  	//设置密码
-	$("#setPsw").click(function(){
-		 mini.open({
-             url: "/toUpdatePwd",
-             showMaxButton: false,
-             title: "修改密码",
-             width: 500,
-             height: 350,
-             onload: function () {},
-             ondestroy: function (action) {  //弹出页面关闭前
-                 if(action=="ok"){
-                 	/* mini.alert("修改密码成功"); */
-             	} 
-             }
-         }); 
-	})
-	
     $("#exitclick").click(function(){
 		logout();
 	})
     function logout(){
 		location.href="/logout";
 	}
+	//设置密码
+	$("#xiugaimima").click(function(){
+		debugger;
+		 mini.open({
+             url: "/toUpdatePwd",
+             showMaxButton: false,
+             title: "修改密码",
+             width: 350,
+             height: 300,
+             onload: function () {},
+             ondestroy: function (action) {  //弹出页面关闭前
+                 if(action=="ok"){
+                 	
+             	} 
+             }
+         }); 
+	})
 	//]]>   
 </script>
 

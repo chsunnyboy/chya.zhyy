@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>修改密码</title>
+	<link th:href="@{/frame1/res/index.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/scripts/miniui/themes/cupertino/skin.css}"/>
+    <script th:src="@{/scripts/boot.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/scripts/jquery.min.js}" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		.New_Button, .Edit_Button, .Delete_Button, .Update_Button, .Cancel_Button {
+			font-size: 11px;
+			color: #1B3F91;
+			font-family: Verdana;
+			margin-right: 5px;
+		}
+		.title_show{text-overflow:ellipsis; overflow:hidden; white-space:nowrap; width:200px;}
+	</style>
+</head>
+<body>
+	<div id="confirm" style="padding: 10px 10px;">
+	<div id="pwdform" class="form" >
+		<div>
+		    <span>原始密码</span>
+		    <div style="margin-top: 5px;">
+		    	<input id="oldpwd" name="oldpwd" class="mini-password" required="true" width="100%" onvaluechanged="checkNew"/>
+		    </div>
+		</div>
+		<div style="padding: 20px 0;">
+		    <span>新密码（不少于4位）</span>
+		    <div style="margin-top: 5px;">
+		    	 <input id="newpwd" name="newpwd" class="mini-password" vtype="minLength:4" required="true" width="100%" minLengthErrorText="密码不能少于4个字符" onvaluechanged="checkOld"/>
+		    </div>
+		</div>
+		<div>
+		    <span>确认密码</span>
+		    <div style="margin-top: 5px;">
+		    	 <input id="surepwd" name="surepwd" class="mini-password" vtype="minLength:4" required="true" width="100%" minLengthErrorText="密码不能少于4个字符" onvaluechanged="checkSureNew" />
+		    </div>
+		</div>
+	</div>
+	</div>
+	<div style="position:absolute;bottom:20px;right:20px;text-align:center;">   
+           <a class="mini-button" onclick="sure()" style="margin-right: 20px;">修改</a>
+           <a class="mini-button" onclick="onCancel()">关闭</a>
+    </div>
+    <script th:inline="javascript">
+        //<![CDATA[
+   		mini.parse();
+ 		function checkOld(){
+ 			oldAndNew();
+ 		}
+ 		
+ 		function checkNew(){
+ 			 oldAndNew();
+ 		}
+ 		
+ 		function checkSureNew(){
+ 			oldAndNew();
+ 		}
+ 		function oldAndNew(){
+ 			 var oldpwd=mini.get("oldpwd").getValue();
+ 			 var newpwd=mini.get("newpwd").getValue();
+ 			 var surepwd=mini.get("surepwd").getValue();
+ 			 if(oldpwd && newpwd){
+ 				 if(oldpwd==newpwd){
+ 					 mini.alert("新密码和原始密码一样！")
+ 					 mini.get("newpwd").setValue("");
+ 					 mini.get("surepwd").setValue("");
+ 					 return false;
+ 				 }
+ 			 }
+ 			 if(newpwd && surepwd){
+ 				if(newpwd!=surepwd){
+					 mini.alert("确认密码和新密码不一致")
+ 					 mini.get("surepwd").setValue("");
+					 return false;
+				 }
+ 			 }
+ 		}
+ 		
+
+        //修改
+        function sure(){
+        	 var form = new mini.Form("#pwdform");
+             form.validate();
+             if (form.isValid() == false) return;
+             var flag=oldAndNew();
+             if(flag!=false){
+                 var o = form.getData();
+                 var json = mini.encode(o);
+           		 $.ajax({
+           		    type: "POST",
+           		    url: "/updatePwd",
+           		    data: {data:json},
+           		    success: function(msg) {
+           		    	if(msg.success){
+           		    		mini.alert("修改成功!");
+           		    		//CloseWindow("ok");
+                        }else{
+                        	mini.alert(msg.error);
+                        }
+           		    },
+	           		error: function (jqXHR, textStatus, errorThrown) {
+	                    mini.alert(jqXHR.responseText);
+	                }
+           		});
+             }
+	
+        }
+        
+        function CloseWindow(action) {
+            if (window.CloseOwnerWindow) return window.CloseOwnerWindow(action);
+            else window.close();
+        }
+
+        function onCancel() {
+            CloseWindow("cancel");
+        }
+        
+     // ]]>
+     </script>
+</body>
+</html>

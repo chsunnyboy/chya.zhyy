@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Option {
+public @interface OptionKey {
 
     String name();
 

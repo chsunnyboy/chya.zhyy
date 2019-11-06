@@ -40,6 +40,13 @@ public class SysOrganiseController extends BaseController{
         
     }
 	
+	@ModelAttribute("organiseStatus")
+    public List<Map<String,Object>> getOrganiseStatus(Model model)throws Exception {
+		List<Map<String, Object>> loadOption = optionService.loadOption("SYS_USE_STATUS");
+		model.addAttribute("organiseStatusP", JSONObject.toJSONString(loadOption));
+        return loadOption;
+    }
+	
 	@RequestMapping("/")
 	public String home() {
 		return "chya/zhyy/organise/home";

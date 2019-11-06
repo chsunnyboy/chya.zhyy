@@ -14,9 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 
 import chya.zhyy.entity.BaseEntity;
+import chya.zhyy.entity.annotation.OptionKey;
 import chya.zhyy.entity.annotation.Title;
 
 
@@ -48,10 +48,6 @@ public class SysUser extends BaseEntity{
     @Column(name = "user_code",length = 100, nullable = false,unique=true)
     private String userCode;
 
-    @Title("助记码")
-    @Column(name = "user_opcode",length = 100, nullable = false)
-    private String userOpcode;
-    
     @Title("用户名称")
     @Column(name = "user_name",length = 100, nullable = false)
     private String userName;
@@ -66,9 +62,10 @@ public class SysUser extends BaseEntity{
 
     @Title("管理员")
     @Column(name = "admin")
-    private Integer admin;
+    private Boolean admin;
     
     @Title("状态")
+    @OptionKey(name="SYS_USER_STATUS",editable = false)
     @Column(name = "status")
     private Integer status;
     
@@ -76,6 +73,10 @@ public class SysUser extends BaseEntity{
     @Temporal(TemporalType.DATE)
     @Column(name = "valid_date")
     private Date validDate;
+    
+    @Title("序号")
+    @Column(name = "order_no")
+    private Integer orderNo;
 
     public Integer getId() {
         return id;
@@ -117,11 +118,11 @@ public class SysUser extends BaseEntity{
         this.webPwd = webPwd;
     }
 
-    public Integer getAdmin() {
+    public Boolean getAdmin() {
         return admin;
     }
 
-    public void setAdmin(Integer admin) {
+    public void setAdmin(Boolean admin) {
         this.admin = admin;
     }
 
@@ -141,20 +142,20 @@ public class SysUser extends BaseEntity{
 		this.status = status;
 	}
 
-	public String getUserOpcode() {
-		return userOpcode;
-	}
-
-	public void setUserOpcode(String userOpcode) {
-		this.userOpcode = userOpcode;
-	}
-
 	public Date getValidDate() {
 		return validDate;
 	}
 
 	public void setValidDate(Date validDate) {
 		this.validDate = validDate;
+	}
+
+	public Integer getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Integer orderNo) {
+		this.orderNo = orderNo;
 	}
     
 }

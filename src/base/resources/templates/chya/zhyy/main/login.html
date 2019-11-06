@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<title>登录</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
+		<link th:href="@{/res/fonts/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+		<script th:src="@{/js/jquery-1.11.1.js}" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+	<body>
+		<nav>
+			<div class="logoDiv pr l">
+				<img th:src="@{/img/logo.png}" class="logoImg pa"/>
+			</div>
+			<span class="goIndex r">欢迎登录</span>
+		</nav>
+		<div class="container">
+			<form action="login" id = "login" method="post">
+				<div class="main">
+					<div class="loginMain r">
+						<div class="loginTop">
+							密码登录
+						</div>
+						<p class="colorr" th:text="${message}"></p>
+						<div class="passwLogin">
+							<div><input type="text"  id="username" placeholder="请输入用户名" name="username" pattern="[A-z]{3}" th:value="${userName}" /></div>
+							<p>用户名不能为空</p>
+							<div class="pwDiv"><input id="password" type="text" placeholder="请输入密码" name="password" class="hidd" autocomplete="off" onfocus="this.type='password'"/></div>
+							<p>密码不能为空</p>
+							<div class="loginBtn">登录</div>
+							<div class="botDiv"><span>忘记密码</span><span class="goregister">免费注册</span></div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		
+		<footer class="commonFooter commonFooterTemp" th:fragment="footer" th:if="${page == null}">
+			<div class="footer">
+				<p>Copyright © 晨阳信息科技有限公司</p>
+			</div>
+		</footer>
+		
+		<script th:inline="javascript">
+		//<![CDATA[
+			$(function(){
+
+				$('body').on('mouseover','.hover,footer.commonFooter ul li span',function(){
+					$(this).addClass('commonHover')
+				})
+				$('body').on('mouseout','.hover,footer.commonFooter ul li span',function(){
+					$(this).removeClass('commonHover')
+				})
+				//	跳转----------------------
+				$('.gologin').click(function(){
+					//window.location.href="login.html"
+				})
+				$('.goregister').click(function(){
+					//window.location.href="register.html"
+				})
+				$('.goIndex').click(function(){
+					//window.location.href="index.html"
+				})
+				
+				$(".loginBtn").click(function(){
+					debugger;
+					console.info("loginBtn");
+					$("#login").submit();
+				})
+				
+				$("#username").keypress(function(e) {
+					if (e.keyCode == 13){
+							//$('.loginBtn').click();
+						$("#password").focus();
+					}
+				})
+				
+				$("#password").keypress(function(e) {
+					if (e.keyCode == 13){
+						$('.loginBtn').click();
+					}
+				})
+			    if($("#main",parent.document).length > 0){
+                    window.parent.location.href='/login';
+                }
+			})
+		//]]>
+			</script>
+	</body>
+</html>

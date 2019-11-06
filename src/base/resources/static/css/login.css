@@ -1,0 +1,313 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+/** 设置默认字体 **/
+body,
+button, input, select, textarea /* for ie */ {
+  font: 14px/1.5 微软雅黑, arial, \5b8b\4f53, sans-serif;
+}
+h1, h2, h3, h4, h5, h6 { font-size: 100%; }
+address, cite, dfn, em, var { font-style: normal; } /* 将斜体扶正 */
+code, kbd, pre, samp { font-family: courier new, courier, monospace; } /* 统一等宽字体 */
+small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正常化 */
+
+/** 重置列表元素 **/
+ul, ol { list-style: none; }
+
+/** 重置文本格式元素 **/
+a { text-decoration: none; }
+
+
+/** 重置表单元素 **/
+legend { color: #000; } /* for ie6 */
+fieldset, img { border: 0; } /* img 搭车：让链接里的 img 无边框 */
+button, input, select, textarea { font-size: 100%; } /* 使得表单元素在 ie 下能继承字体大小 */
+/* 注：optgroup 无法扶正 */
+
+/** 重置表格元素 **/
+table { border-collapse: collapse; border-spacing: 0; }
+
+body,html{
+	width: 100%;
+	/*overflow-x: hidden;*/
+	/*height: 100%;*/
+	 -webkit-overflow-scrolling: touch;
+}
+.read_star{
+	color: red;
+}
+/* 清除浮动 */
+.clear:after {
+  content: '\20';
+  display: block;
+  height: 0;
+  clear: both;
+}
+.clear {
+  *zoom: 1;
+}
+.point{
+	cursor: pointer;
+}
+.l{
+	float: left;
+}
+.r{
+	float: right;
+}
+.tc{
+	text-align: center;
+}
+.di{
+	display: inline-block;
+}
+.oa{
+	overflow: auto;
+}
+.hidden{
+	display: none;
+}
+.db{
+	display: block;
+}
+.main{
+	width: 1200px;
+	margin: 0 auto;
+	clear: both;
+}
+.bgf{
+	background: #fff;
+}
+.font16{
+	font-size: 16px;
+}
+.font14{
+	font-size: 14px;
+}
+.font18{
+	font-size: 18px;
+}
+.font20{
+	font-size: 20px;
+}
+.color3{
+	color: #333;
+}
+.color6{
+	color: #666;
+}
+.color5{
+	color: #555;
+}
+.color9{
+	color: #999;
+}
+.colorf{
+	color: #fff;
+}
+.colorO{
+	color: #FF8B35;
+}
+.colorB{
+	color: #0C8ABF;
+}
+.colorr{
+	color: red;
+}
+body .commonHover{
+	color: #0C8ABF;
+}
+.pr{
+	position: relative;
+}
+.pa{
+	position: absolute;
+}
+.hand{
+	cursor: pointer;
+}
+.borderd9{
+	border: 1px solid #D9D9D9;
+	box-sizing: border-box;
+}
+
+
+/*header-------------------------------------------------*/
+header.commonHead{
+	width: 100%;
+	height: 28px;
+	border: 1px solid #E7E7E7;
+	background: #f1f1f1;
+	position: relative;
+	z-index: 100;
+	box-sizing: border-box;
+}
+header.commonHead .main{
+	line-height: 28px;
+	height: 30px;
+}
+header.commonHead .gologin{
+	margin-left: 58px;
+}
+header.commonHead .goregister{
+	border-left: 1px solid #cacaca;
+	padding-left: 14px;
+	margin-left: 18px;
+	display: inline-block;
+	height: 16px;
+	margin-top: 5px;
+	line-height: 16px;
+}
+header.commonHead span.r{
+	margin-right: 40px;
+}
+header.commonHead span.phongSp{
+	margin-right: 0;
+}
+header.commonHead span:not(.phongSp):hover{
+	color: #0C8ABF;
+}
+header.commonHead img{
+	width: 20px;
+	height: 20px;
+	margin: 4px 6px 0 0;
+}
+nav{
+	width: 1200px;
+	height: 100px;
+	margin: 0 auto;
+	clear: both;
+}
+.logoImg{
+	width: 110px;
+	height: 110px;
+	cursor: pointer;
+}
+.goIndex{
+	font-size: 22px;
+	color: #333;
+	background: url(../img/goindex.png) no-repeat left center / 26px 26px;
+	padding-left: 38px;
+	margin-top: 35px;
+	cursor: pointer;
+	height: 30px;
+	line-height: 30px;
+}
+.container{
+    width: 100%;
+    height: 450px;
+    background: url(../img/loginBg1.jpg) no-repeat center;
+}
+.container .main {
+    height: 100%;
+}
+.loginMain{
+	width: 350px;
+	height: 320px;
+	margin-top: 50px;
+	background: #fff;
+	position: relative;
+	padding: 8px 0 0 30px;
+}
+.loginTop{
+	height: 78px;
+	font-size: 20px;
+	line-height: 78px;
+}
+
+.passwLogin{
+	/*padding: 46px 0 0 30px;*/
+}
+.passwLogin div:first-child,.passwLogin div.pwDiv{
+	width: 320px;
+	height: 40px;
+	background: url(../img/loginname.png) no-repeat left center / 40px 40px;
+	color: #888;
+	border: 1px solid #D5D5D5;
+}
+.passwLogin div.pwDiv{
+	background-image: url(../img/loginpw.png);
+	/* margin-top: 22px; */
+}
+.passwLogin div:first-child input,.passwLogin div.pwDiv input.hidd{
+	width: 278px;
+	height: 38px;
+	margin: 1px 1px 0 41px;
+	border: none;
+	font-size: 16px;
+	text-indent: 14px;
+	background-color: #fff;
+	color: #888;
+}
+.hide{
+	display: none;
+}
+.hidd::-ms-reveal { display: none; }
+.loginBtn{
+	width: 320px;
+	height: 40px;
+	background: #508efa;
+	border-radius: 5px;
+	margin-top: 15px;
+	text-align: center;
+	line-height: 40px;
+	color: #fff;
+	font-size: 20px;
+	cursor: pointer;
+}
+.passwLogin p{
+	font-size: 12px;
+	color: #999;
+	background: url(../img/loginwrong.png) no-repeat left top / 16px 16px;
+	padding-left: 22px;
+	height: 16px;
+	line-height: 16px;
+	margin: 2px 0 4px;
+	visibility: hidden;
+	/* display: none; */
+}
+.botDiv{
+	width: 100%;
+	text-align: center;
+	color:#999;
+	font-size: 14px;
+	height: 14px;
+	line-height: 14px;
+	position: absolute;
+	bottom: 18px;
+	left: 0;
+}
+.botDiv span{
+	cursor: pointer;
+}
+.botDiv span:first-child{
+	margin-right: 30px;
+}
+nav .logoDiv{
+	width: 200px;
+	height: 86px;
+	margin-top: 7px;
+}
+nav .logoDiv img{
+    top: 0; left: 0; bottom: 0;  
+  	max-width: 100%;
+  	max-height: 100%;
+  	width: auto;
+  	height: auto;
+  	margin: auto;
+}
+/*底部-----------------*/
+.footer{
+	width: 100%;
+	/* height: 80px; */
+	/* background: #4e4e4e; */
+	text-align: center;
+	/* line-height: 78px; */
+	color: #555;
+	font-size: 16px;
+	/* position: fixed; */
+	/* bottom: 0; */
+	/* left: 0; */
+	padding-top: 20px;
+}

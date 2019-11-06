@@ -38,13 +38,13 @@ public class SysFuncGroup extends BaseEntity{
     @Column(name = "order_no")
 	private Integer orderNo;
 	
-	@Title("助记码")
-    @Column(name = "group_opcode",length = 100, nullable = false)
-	private String groupOpcode;
-	
 	@Title("状态")
-    @Column(name = "status")
+    @Column(name = "status",unique=true)
 	private Integer status;
+	
+	@Title("FontAwesome")
+    @Column(name = "iconCls")
+	private String iconCls;
 	
 	public Integer getId() {
 		return id;
@@ -78,14 +78,6 @@ public class SysFuncGroup extends BaseEntity{
 		this.orderNo = orderNo;
 	}
 
-	public String getGroupOpcode() {
-		return groupOpcode;
-	}
-
-	public void setGroupOpcode(String groupOpcode) {
-		this.groupOpcode = groupOpcode;
-	}
-
 	public Integer getStatus() {
 		return status;
 	}
@@ -93,4 +85,13 @@ public class SysFuncGroup extends BaseEntity{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
+
+	public String getIconCls() {
+		return iconCls;
+	}
+
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
+	}
+	
 }
