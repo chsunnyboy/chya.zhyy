@@ -64,22 +64,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.kie</groupId>
 			<artifactId>kie-server-spring-boot-starter</artifactId>
 			<version>${runtime.version}</version>
-			<exclusions>
-		        <exclusion>
-		          <groupId>org.kie</groupId>
-		          <artifactId>kie-server-spring-boot-autoconfiguration</artifactId>
-		        </exclusion>
-		     </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-test</artifactId>
 			<version>${runtime.version}</version>
-		</dependency> -->
+		</dependency>
 	</dependencies>
 
 	<build>
